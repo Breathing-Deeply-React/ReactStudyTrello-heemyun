@@ -12,6 +12,7 @@ const StyledHeader = styled.header`
   margin: 0 auto;
   padding: 0 4px;
   background-color: #c5b8b1;
+  box-sizing: border-box;
 
   .header-nav {
     ${({ mixins }) => mixins.flexBox('row')};
@@ -73,9 +74,9 @@ const Header = () => {
           <span className='blind'>꿍렐로</span>
         </h1>
         <div className='header-buttons'>
-          {buttonText.map(btn => (
+          {buttonText.map((btn, idx) => (
             <>
-              <CustomButton text={btn} type='dropdown' />
+              <CustomButton key={idx} text={btn} type='dropdown' />
             </>
           ))}
           <CustomButton text={'Create'} />
