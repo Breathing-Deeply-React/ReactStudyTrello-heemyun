@@ -10,20 +10,16 @@ const Board = ({ title, cardsList, onEdit }) => {
   return (
     <div className='board'>
       <h2 className='blind'>board title</h2>
-      <textarea
+      <input
         className='board-title'
         name='title'
         value={title}
         onChange={onEdit}
-      >
-        {title}
-      </textarea>
+      />
       {cardsList.map((card, index) => {
         if (index === cardsList.length - 1) {
           return (
-            // 인덱스 마지막일 때 add card 버튼 추가
-            // [Q] 이 버튼 추가를 card 컴포넌트 내에서 할 수는 없나요?
-            <button className='card-add' onClick={onAdd}>
+            <button className='card-add' onClick={onAdd} key={index}>
               <i className='add-ico'>+</i>
               <span className='card-text'>Add a card</span>
             </button>

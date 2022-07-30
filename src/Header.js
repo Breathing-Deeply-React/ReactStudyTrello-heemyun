@@ -71,21 +71,17 @@ const Header = () => {
         </button>
         <h1 className='header-title'>
           <i className='header-logo'></i>
-          <span className='blind'>꿍렐로</span>
+          <span className='blind'>마이트렐로</span>
         </h1>
         <div className='header-buttons'>
           {buttonText.map((btn, idx) => (
-            <>
-              <CustomButton key={idx} text={btn} type='dropdown' />
-            </>
+            <CustomButton key={idx} text={btn} type='dropdown' />
           ))}
           <CustomButton text={'Create'} />
         </div>
       </div>
       <div className='header-tool'>
-        <div>
-          <input type='text' placeholder='Search' />
-        </div>
+        <div>{/* <input type='text' placeholder='Search' /> */}</div>
         <CustomButton
           className='header-info'
           type='information'
