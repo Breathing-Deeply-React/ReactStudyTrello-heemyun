@@ -162,6 +162,7 @@ const Main = () => {
       {listState.map(board => (
         <Board
           key={board.id}
+          id={board.id}
           title={board.title}
           cardsList={board.cards}
           onEdit={onEdit}
