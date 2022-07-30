@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import Card from '../components/Card';
 
-const Board = ({ title, cardsList, onEdit }) => {
-  const onAdd = e => {
-    // TODO: card CREATE
-    console.log('add');
+const Board = ({ title, id }) => {
+  let cardId = useRef(1);
+
+  const [cards, setCards] = useState([]);
+  const [cardInputValue, setCardInputValue] = useState('');
+
+  const onAddCard = listId => {
+    setCards(prevState => {
+      return [...cards, { title: cardInputValue, id: cardId.current }];
+    });
+    setCardInputValue('');
+
+    cardId.current++;
+  };
+
+  const onInputTitle = e => {
+    setCardInputValue(e.target.value);
   };
 
   return (
@@ -14,20 +27,24 @@ const Board = ({ title, cardsList, onEdit }) => {
         className='board-title'
         name='title'
         value={title}
-        onChange={onEdit}
+        onChange={onAddCard}
       />
-      {cardsList.map((card, index) => {
-        if (index === cardsList.length - 1) {
-          return (
-            <button className='card-add' onClick={onAdd} key={index}>
-              <i className='add-ico'>+</i>
-              <span className='card-text'>Add a card</span>
-            </button>
-          );
-        }
+      {cards.map((card, index) => {
         return <Card key={card.id} title={card.title} index={index} />;
       })}
-      <button className='board-more'></button>
+      <button className='card-add'>
+        <i className='add-ico'>+</i>
+        <span className='card-text' onClick={onAddCard}>
+          Add a card
+        </span>
+        <input
+          className='board-title'
+          name='title'
+          value={cardInputValue}
+          onChange={onInputTitle}
+          placeholder='Enter list title...'
+        />
+      </button>
     </div>
   );
 };

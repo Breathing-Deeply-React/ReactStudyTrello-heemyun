@@ -110,33 +110,22 @@ const StyledMain = styled.main`
 
 const Main = () => {
   let listId = useRef(1);
-  let cardId = useRef(1);
 
   const [listState, setListState] = useState([]);
-
-  const [inputState, setInputState] = useState('');
-  const [cardState, setCardState] = useState('');
-
-  const onAddList = () => {
-    const newList = {
-      title: inputState,
-      id: listId,
-      cards: [{ title: cardState, id: cardId }]
-    };
-
-    setListState(prevState => {
-      return [...prevState, newList];
-    });
-
-    listId++;
-  };
-
-  const onAddCard = listId => {
-    const newCard = {};
-  };
+  const [inputValue, setinputValue] = useState('');
 
   const [inputFocus, setInputFocus] = useState(false);
   const boardTitleInput = useRef();
+
+  const onAddList = () => {
+    if (!inputValue) return;
+    setListState(prevState => {
+      return [...prevState, { title: inputValue, id: listId.current }];
+    });
+
+    setinputValue('');
+    listId.current++;
+  };
 
   const onAddToggle = () => {
     setInputFocus(!inputFocus);
@@ -144,35 +133,21 @@ const Main = () => {
   };
 
   const onInputTitle = e => {
-    setInputState(e.target.value);
-    // setData({
-    //   ...data,
-    //   [target.name]: target.value,
-    // });
+    setinputValue(e.target.value);
   };
-
-  const onEdit = e => {
-    console.log('onEdit at Main');
-  };
-
-  const buttonText = listState.length === 0 ? 'Add a list' : 'Add another list';
 
   return (
     <StyledMain>
       {listState.map(board => (
-        <Board
-          key={board.id}
-          id={board.id}
-          title={board.title}
-          cardsList={board.cards}
-          onEdit={onEdit}
-        />
+        <Board key={board.id} id={board.id} title={board.title} />
       ))}
       <div className='board-add'>
         {inputFocus ? (
           <div className='board-add-another' onClick={onAddToggle}>
             <i className='add-ico'>+</i>
-            <span className='add-text'>{buttonText}</span>
+            <span className='add-text'>
+              {listState.length === 0 ? 'Add a list' : 'Add another list'}
+            </span>
           </div>
         ) : (
           <div>
@@ -180,7 +155,7 @@ const Main = () => {
               className='board-title'
               ref={boardTitleInput}
               name='title'
-              value={inputState}
+              value={inputValue}
               onChange={onInputTitle}
               placeholder='Enter list title...'
             />
