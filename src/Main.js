@@ -134,7 +134,6 @@ const Main = () => {
 
   const onAddToggle = () => {
     setInputFocus(!inputFocus); // 비동기다. 함수형 업데이트를 해줘야한다.
-    // if (!inputFocus) boardTitlefocus.current.focus();
   };
 
   const onInputTitle = e => {
