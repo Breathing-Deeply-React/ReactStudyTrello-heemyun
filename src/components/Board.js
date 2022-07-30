@@ -8,6 +8,7 @@ const Board = ({ title, id }) => {
   const [cardInputValue, setCardInputValue] = useState('');
 
   const onAddCard = listId => {
+    if (!cardInputValue) return;
     setCards(prevState => {
       return [...cards, { title: cardInputValue, id: cardId.current }];
     });

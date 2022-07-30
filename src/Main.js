@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './styles/reset.css';
 import styled from 'styled-components';
 import Board from './components/Board';
@@ -115,7 +115,8 @@ const Main = () => {
   const [inputValue, setinputValue] = useState('');
 
   const [inputFocus, setInputFocus] = useState(false);
-  const boardTitleInput = useRef();
+
+  const boardTitlefocus = useRef();
 
   const onAddList = () => {
     if (!inputValue) return;
@@ -127,9 +128,13 @@ const Main = () => {
     listId.current++;
   };
 
+  useEffect(() => {
+    if (!inputFocus) boardTitlefocus.current.focus();
+  }, [inputFocus]);
+
   const onAddToggle = () => {
-    setInputFocus(!inputFocus);
-    if (!inputFocus) boardTitleInput.current.focus();
+    setInputFocus(!inputFocus); // 비동기다. 함수형 업데이트를 해줘야한다.
+    // if (!inputFocus) boardTitlefocus.current.focus();
   };
 
   const onInputTitle = e => {
@@ -153,7 +158,7 @@ const Main = () => {
           <div>
             <input
               className='board-title'
-              ref={boardTitleInput}
+              ref={boardTitlefocus}
               name='title'
               value={inputValue}
               onChange={onInputTitle}
