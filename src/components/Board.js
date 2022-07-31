@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import Card from '../components/Card';
 
-const Board = ({ title, id }) => {
+const Board = ({ title, id, onRemove }) => {
   let cardId = useRef(1);
 
   const [cards, setCards] = useState([]);
@@ -17,6 +17,10 @@ const Board = ({ title, id }) => {
     cardId.current++;
   };
 
+  const onClickRemove = () => {
+    onRemove(id);
+  };
+
   const onInputTitle = e => {
     setCardInputValue(e.target.value);
   };
@@ -24,12 +28,14 @@ const Board = ({ title, id }) => {
   return (
     <div className='board'>
       <h2 className='blind'>board title</h2>
+
       <input
         className='board-title'
         name='title'
         value={title}
         onChange={onAddCard}
       />
+      <button onClick={onClickRemove}>X</button>
       {cards.map((card, index) => {
         return <Card key={card.id} title={card.title} index={index} />;
       })}

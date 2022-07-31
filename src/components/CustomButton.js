@@ -41,6 +41,7 @@ const CustomButton = ({ text, type, onClick }) => {
     ? type
     : 'default';
 
+  // el : TODO 외부 영역 누르면 닫히겡
   const el = useRef();
   const [isModalOpen, setModalOpen] = useState(false);
 
@@ -64,9 +65,9 @@ const CustomButton = ({ text, type, onClick }) => {
       >
         {text}
       </StyledButton>
-      {isModalOpen ? (
+      {isModalOpen && (
         <Modal ref={el} title={text} handleCloseModal={handleCloseModal} />
-      ) : null}
+      )}
     </>
   );
 };

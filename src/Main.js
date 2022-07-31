@@ -32,7 +32,7 @@ const StyledMain = styled.main`
     box-sizing: border-box;
 
     &-title {
-      width: 100%;
+      width: 95%;
       height: 28px;
       min-height: 28px;
       max-height: 256px;
@@ -94,8 +94,7 @@ const StyledMain = styled.main`
     }
 
     &-add {
-      width: 85%;
-      max-width: 200px;
+      width: 100%;
       margin-top: 5px;
       padding: 5px;
       border-radius: 3px;
@@ -109,13 +108,26 @@ const StyledMain = styled.main`
 `;
 
 const Main = () => {
-  let listId = useRef(1);
-
+  let listId = useRef(0);
   const [listState, setListState] = useState([]);
+
+  // // localStorage 가져오기
+  // useEffect(() => {
+  //   setListState(prevState => {
+  //     return [
+  //       ...prevState,
+  //       ...JSON.parse(localStorage.getItem('board-title-value'))
+  //     ];
+  //   });
+  // }, []);
+
+  // // localStorage 저장
+  // useEffect(() => {
+  //   localStorage.setItem('board-title-value', JSON.stringify(listState));
+  // }, [listState]);
+
   const [inputValue, setinputValue] = useState('');
-
   const [inputFocus, setInputFocus] = useState(false);
-
   const boardTitlefocus = useRef();
 
   const onAddList = () => {
@@ -128,13 +140,20 @@ const Main = () => {
     listId.current++;
   };
 
+  const onRemove = targetId => {
+    setListState(listState.filter(item => item.id !== targetId));
+  };
+
+  // input focus
+  const onAddToggle = () => {
+    setInputFocus(!inputFocus);
+    // setState는 비동기라서 여기서 focus줘도 적용이 안 됨. (함수형 업데이트)
+  };
+
   useEffect(() => {
     if (!inputFocus) boardTitlefocus.current.focus();
+    // 위와 같은 문제로 useEffect 사용.
   }, [inputFocus]);
-
-  const onAddToggle = () => {
-    setInputFocus(!inputFocus); // 비동기다. 함수형 업데이트를 해줘야한다.
-  };
 
   const onInputTitle = e => {
     setinputValue(e.target.value);
@@ -143,7 +162,12 @@ const Main = () => {
   return (
     <StyledMain>
       {listState.map(board => (
-        <Board key={board.id} id={board.id} title={board.title} />
+        <Board
+          key={board.id}
+          id={board.id}
+          title={board.title}
+          onRemove={onRemove}
+        />
       ))}
       <div className='board-add'>
         {inputFocus ? (
