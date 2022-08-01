@@ -1,4 +1,3 @@
-import { mixins } from '../styles/layout';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -15,6 +14,10 @@ const StyledCard = styled.div`
       display: flex;
       justify-content: space-between;
       align-items: center;
+
+      button {
+        padding: 3px 6px;
+      }
     }
 
     &-title {
@@ -38,16 +41,16 @@ const StyledCard = styled.div`
     }
   }
 `;
-const Card = ({ title }) => {
-  const onClickRemove = () => {
-    console.log('card remove');
+const Card = ({ title, id, onRemoveCard }) => {
+  const onRemove = () => {
+    onRemoveCard(id);
   };
   return (
     <StyledCard className='card'>
       <div className='card-inner'>
         <h3 className='blind'>card title</h3>
         <div className='card-title'>{title}</div>
-        <button onClick={onClickRemove}>x</button>
+        <button onClick={onRemove}>x</button>
       </div>
     </StyledCard>
   );

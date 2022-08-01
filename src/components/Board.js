@@ -7,7 +7,7 @@ const Board = ({ title, id, onRemove }) => {
   const [cards, setCards] = useState([]);
   const [cardInputValue, setCardInputValue] = useState('');
 
-  const onAddCard = listId => {
+  const onAddCard = () => {
     if (!cardInputValue) return;
     setCards(prevState => {
       return [...cards, { title: cardInputValue, id: cardId.current }];
@@ -21,7 +21,11 @@ const Board = ({ title, id, onRemove }) => {
     onRemove(id);
   };
 
-  const onInputTitle = e => {
+  const onRemoveCard = targetId => {
+    setCards(cards.filter(item => item.id !== targetId));
+  };
+
+  const onEditTitle = e => {
     setCardInputValue(e.target.value);
   };
 
@@ -37,7 +41,15 @@ const Board = ({ title, id, onRemove }) => {
       />
       <button onClick={onClickRemove}>X</button>
       {cards.map((card, index) => {
-        return <Card key={card.id} title={card.title} index={index} />;
+        return (
+          <Card
+            key={card.id}
+            id={card.id}
+            title={card.title}
+            index={index}
+            onRemoveCard={onRemoveCard}
+          />
+        );
       })}
       <button className='card-add'>
         <i className='add-ico'>+</i>

@@ -184,7 +184,7 @@ const Main = () => {
               ref={boardTitlefocus}
               name='title'
               value={inputValue}
-              onChange={onInputTitle}
+              onChange={onEdit}
               placeholder='Enter list title...'
             />
             <button className='board-add-list' onClick={onAddList}>
