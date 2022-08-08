@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
+
+import CardModal from '../components/CardModal';
 
 const StyledCard = styled.div`
   .card {
@@ -7,7 +9,7 @@ const StyledCard = styled.div`
     border-radius: 5px;
     padding: 10px;
     margin-top: 10px;
-    box-shadow: 0 1px 0 #091e4240;
+    box-shadow: 0px 3px 6px #091e4240;
     cursor: pointer;
 
     &-inner {
@@ -42,17 +44,30 @@ const StyledCard = styled.div`
   }
 `;
 const Card = ({ title, id, onRemoveCard }) => {
-  const onRemove = () => {
-    onRemoveCard(id);
+  const [isEditing, setIsEditing] = useState(false);
+  // const [editTitle, setEditTitle] = useState('');
+
+  const handleOpenModal = ({ target }, id) => {
+    target.style.zIndex = '100';
+    setIsEditing(isEditing => !isEditing);
   };
+  const handleCloseModal = () => {
+    setIsEditing(isEditing => !isEditing);
+  };
+
   return (
-    <StyledCard className='card'>
-      <div className='card-inner'>
-        <h3 className='blind'>card title</h3>
-        <div className='card-title'>{title}</div>
-        <button onClick={onRemove}>x</button>
-      </div>
-    </StyledCard>
+    <>
+      <StyledCard className='card' onClick={e => handleOpenModal(e, id)}>
+        <div className='card-inner'>
+          <h3 className='blind'>card title</h3>
+          <p className='card-title'>{title}</p>
+          <button onClick={() => onRemoveCard(id)}>x</button>
+        </div>
+      </StyledCard>
+      {isEditing && (
+        <CardModal title={title} id={id} handleCloseModal={handleCloseModal} />
+      )}
+    </>
   );
 };
 export default Card;

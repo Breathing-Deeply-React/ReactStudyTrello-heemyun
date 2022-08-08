@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { mixins } from '../styles/layout';
 import styled, { css } from 'styled-components';
-import Modal from './Modal.js';
+import HeaderModal from './HeaderModal.js';
 
 const StyledButton = styled.button`
   position: relative;
@@ -51,7 +51,6 @@ const CustomButton = ({ text, type, onClick }) => {
   };
 
   const handleCloseModal = e => {
-    console.log(e);
     setModalOpen(false);
   };
 
@@ -66,7 +65,11 @@ const CustomButton = ({ text, type, onClick }) => {
         {text}
       </StyledButton>
       {isModalOpen && (
-        <Modal ref={el} title={text} handleCloseModal={handleCloseModal} />
+        <HeaderModal
+          ref={el}
+          title={text}
+          handleCloseModal={handleCloseModal}
+        />
       )}
     </>
   );

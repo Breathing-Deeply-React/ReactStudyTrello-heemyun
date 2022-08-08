@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import './styles/reset.css';
+import '../styles/reset.css';
 import styled from 'styled-components';
-import Board from './components/Board';
+import Board from './Board';
 
 const StyledMain = styled.main`
   display: flex;
@@ -11,7 +11,7 @@ const StyledMain = styled.main`
   flex-grow: 1;
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 44px);
   padding: 20px 10px 0;
   overflow-x: auto;
   background-color: #c5b8b1a8;
@@ -36,7 +36,6 @@ const StyledMain = styled.main`
       height: 28px;
       min-height: 28px;
       max-height: 256px;
-      margin-bottom: 8px;
       padding: 5px;
       overflow-wrap: break-word;
       background: #ebebeb;
@@ -47,11 +46,16 @@ const StyledMain = styled.main`
       box-sizing: border-box;
     }
 
+    &-btns {
+      padding-top: 10px;
+    }
+
     &-add {
       width: 100%;
       min-width: 200px;
       max-width: 200px;
-      padding: 5px;
+      margin: 0 10px;
+      padding: 10px;
       border-radius: 3px;
       text-align: left;
       font-size: 14px;
@@ -108,9 +112,6 @@ const StyledMain = styled.main`
 `;
 
 const Main = () => {
-  let listId = useRef(0);
-  const [listState, setListState] = useState([]);
-
   // // localStorage 가져오기
   // useEffect(() => {
   //   setListState(prevState => {
@@ -126,6 +127,8 @@ const Main = () => {
   //   localStorage.setItem('board-title-value', JSON.stringify(listState));
   // }, [listState]);
 
+  let listId = useRef(0);
+  const [listState, setListState] = useState([]);
   const [inputValue, setinputValue] = useState('');
   const [inputFocus, setInputFocus] = useState(false);
   const boardTitlefocus = useRef();
@@ -155,7 +158,7 @@ const Main = () => {
     // 위와 같은 문제로 useEffect 사용.
   }, [inputFocus]);
 
-  const onInputTitle = e => {
+  const onEdit = e => {
     setinputValue(e.target.value);
   };
 
@@ -187,12 +190,14 @@ const Main = () => {
               onChange={onEdit}
               placeholder='Enter list title...'
             />
-            <button className='board-add-list' onClick={onAddList}>
-              + Add list
-            </button>
-            <span className='board-close' onClick={onAddToggle}>
-              close
-            </span>
+            <div className='board-btns'>
+              <button className='board-add-list' onClick={onAddList}>
+                + Add list
+              </button>
+              <span className='board-close' onClick={onAddToggle}>
+                close
+              </span>
+            </div>
           </div>
         )}
       </div>

@@ -1,5 +1,5 @@
 import { mixins } from '../styles/layout';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 const StyledModal = styled.div`
   position: fixed;

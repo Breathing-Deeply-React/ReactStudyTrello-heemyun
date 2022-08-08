@@ -1,9 +1,9 @@
 import React from 'react';
-import './styles/reset.css';
-import { mixins } from './styles/layout';
+import '../styles/reset.css';
+import { mixins } from '../styles/layout';
 import styled from 'styled-components';
 
-import CustomButton from './components/CustomButton';
+import CustomButton from '../components/CustomButton';
 
 const StyledHeader = styled.header`
   ${({ mixins }) => mixins.flexBox('row', 'center', 'space-between')};

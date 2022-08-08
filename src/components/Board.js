@@ -6,11 +6,15 @@ const Board = ({ title, id, onRemove }) => {
 
   const [cards, setCards] = useState([]);
   const [cardInputValue, setCardInputValue] = useState('');
+  const [cardDesc, setCardDesc] = useState('');
 
   const onAddCard = () => {
     if (!cardInputValue) return;
     setCards(prevState => {
-      return [...cards, { title: cardInputValue, id: cardId.current }];
+      return [
+        ...cards,
+        { title: cardInputValue, id: cardId.current, desc: cardDesc }
+      ];
     });
     setCardInputValue('');
 
@@ -29,10 +33,12 @@ const Board = ({ title, id, onRemove }) => {
     setCardInputValue(e.target.value);
   };
 
+  const onEditDesc = e => {
+    // setCardDesc(e.target.desc)
+  };
   return (
     <div className='board'>
       <h2 className='blind'>board title</h2>
-
       <input
         className='board-title'
         name='title'
@@ -46,6 +52,7 @@ const Board = ({ title, id, onRemove }) => {
             key={card.id}
             id={card.id}
             title={card.title}
+            desc={card.desc}
             index={index}
             onRemoveCard={onRemoveCard}
           />
@@ -60,7 +67,7 @@ const Board = ({ title, id, onRemove }) => {
           className='board-title'
           name='title'
           value={cardInputValue}
-          onChange={onInputTitle}
+          onChange={onEditTitle}
           placeholder='Enter list title...'
         />
       </button>
