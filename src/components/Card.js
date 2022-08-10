@@ -65,7 +65,14 @@ const Card = ({ title, id, onRemoveCard }) => {
         </div>
       </StyledCard>
       {isEditing && (
-        <CardModal title={title} id={id} handleCloseModal={handleCloseModal} />
+        <CardModal
+          title={title}
+          id={id}
+          key={id}
+          isEditing={isEditing}
+          setIsEditing={setIsEditing}
+          handleCloseModal={handleCloseModal}
+        />
       )}
     </>
   );

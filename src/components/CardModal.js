@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
+import useOnClickOutside from '../hooks/useOnClickOutside';
 
 const StyledCardModal = styled.div`
   .dimmed {
@@ -42,13 +43,21 @@ const StyledCardModal = styled.div`
   }
 `;
 
-const CardModal = ({ title, id, desc, handleCloseModal }) => {
-  const onEditTitle = () => {};
-  const onEditDesc = () => {};
+const CardModal = ({
+  title,
+  id,
+  desc,
+  isEditing,
+  setIsEditing,
+  handleCloseModal
+}) => {
+  const ref = useRef();
+  useOnClickOutside(ref, () => setIsEditing(!isEditing));
+
   return (
     <StyledCardModal>
       <div className='dimmed'></div>
-      <div className='modal-content'>
+      <div className='modal-content' ref={ref}>
         <div className='modal-inner'>
           <div className='modal-inner__title'>
             <strong>제목</strong>
@@ -56,7 +65,6 @@ const CardModal = ({ title, id, desc, handleCloseModal }) => {
             <textarea
               name='title'
               value={title}
-              onChange={onEditTitle}
             ></textarea>
           </div>
           <div className='modal-inner__desc'>
@@ -64,10 +72,8 @@ const CardModal = ({ title, id, desc, handleCloseModal }) => {
             <textarea
               name='description'
               value={desc}
-              onChange={onEditDesc}
             ></textarea>
           </div>
-
           <button className='modal-close' onClick={handleCloseModal}>
             <svg
               width='14'
