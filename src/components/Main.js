@@ -147,6 +147,10 @@ const Main = () => {
     setListState(listState.filter(item => item.id !== targetId));
   };
 
+  const onEdit = e => {
+    setinputValue(e.target.value);
+  };
+
   // input focus
   const onAddToggle = () => {
     setInputFocus(!inputFocus);
@@ -157,10 +161,6 @@ const Main = () => {
     if (!inputFocus) boardTitlefocus.current.focus();
     // 위와 같은 문제로 useEffect 사용.
   }, [inputFocus]);
-
-  const onEdit = e => {
-    setinputValue(e.target.value);
-  };
 
   return (
     <StyledMain>

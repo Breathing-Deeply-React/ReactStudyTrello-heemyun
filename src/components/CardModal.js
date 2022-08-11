@@ -32,6 +32,10 @@ const StyledCardModal = styled.div`
       height: 100%;
       padding: 50px 20px 20px;
       box-sizing: border-box;
+
+      &__desc {
+        padding-top: 20px;
+      }
     }
 
     &-close {
@@ -40,6 +44,39 @@ const StyledCardModal = styled.div`
       right: 20px;
       padding: 5px;
     }
+
+    &-btns {
+      position: absolute;
+      right: 20px;
+      bottom: 20px;
+    }
+  }
+
+  strong {
+    display: inline-block;
+    vertical-align: middle;
+    min-width: 40px;
+    margin-right: 14px;
+  }
+
+  textarea {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 7px;
+    font-size: 14px;
+    line-height: 14px;
+    border: 0;
+    border-bottom: 1px solid grey;
+
+    &.modal-title__textarea {
+      height: 14px;
+    }
+  }
+
+  button {
+    padding: 4px;
+    border-radius: 4px;
+    box-shadow: 2px 4px 10px #dedede;
   }
 `;
 
@@ -49,10 +86,23 @@ const CardModal = ({
   desc,
   isEditing,
   setIsEditing,
+  onEditDesc,
+  onAddDesc,
   handleCloseModal
 }) => {
   const ref = useRef();
   useOnClickOutside(ref, () => setIsEditing(!isEditing));
+
+  const [isEdit, setIsEdit] = useState(false);
+  const toggleIsEdit = () => setIsEdit(!isEdit);
+
+  const [localTitle, setLocalTitle] = useState(title);
+  const [localDesc, setLocalDesc] = useState(desc);
+
+  const quitEdit = () => {
+    setIsEdit(false);
+    setLocalDesc(localDesc);
+  };
 
   return (
     <StyledCardModal>
@@ -60,19 +110,27 @@ const CardModal = ({
       <div className='modal-content' ref={ref}>
         <div className='modal-inner'>
           <div className='modal-inner__title'>
-            <strong>제목</strong>
+            <strong>할 일</strong>
             <p className='modal-title blind'>{title}</p>
             <textarea
+              className='modal-title__textarea'
               name='title'
-              value={title}
+              value={localTitle}
+              onChange={e => setLocalTitle(e.target.value)}
             ></textarea>
           </div>
           <div className='modal-inner__desc'>
-            <strong>Description</strong>
-            <textarea
-              name='description'
-              value={desc}
-            ></textarea>
+            <strong>설명</strong>
+            {isEdit ? (
+              <textarea
+                className='modal-desc__textarea'
+                name='description'
+                value={localDesc}
+                onChange={e => setLocalDesc(e.target.value)}
+              ></textarea>
+            ) : (
+              <>{localDesc}</>
+            )}
           </div>
           <button className='modal-close' onClick={handleCloseModal}>
             <svg
@@ -91,6 +149,25 @@ const CardModal = ({
             </svg>
             <span className='blind'>close</span>
           </button>
+          <div className='modal-btns'>
+            {isEdit ? (
+              <>
+                <button onClick={quitEdit}>취소</button>
+                <button
+                  onClick={e => {
+                    onAddDesc(e, id, localDesc);
+                    toggleIsEdit();
+                  }}
+                >
+                  완료
+                </button>
+              </>
+            ) : (
+              <>
+                <button onClick={toggleIsEdit}>수정하기</button>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </StyledCardModal>

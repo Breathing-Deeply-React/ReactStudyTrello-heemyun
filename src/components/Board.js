@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Card from '../components/Card';
 
 const Board = ({ title, id, onRemove }) => {
@@ -6,9 +6,9 @@ const Board = ({ title, id, onRemove }) => {
 
   const [cards, setCards] = useState([]);
   const [cardInputValue, setCardInputValue] = useState('');
-  const [cardDesc, setCardDesc] = useState('');
+  const [cardDesc, setCardDesc] = useState(null);
 
-  const onAddCard = () => {
+  const onAddCard = e => {
     if (!cardInputValue) return;
     setCards(prevState => {
       return [
@@ -29,13 +29,19 @@ const Board = ({ title, id, onRemove }) => {
     setCards(cards.filter(item => item.id !== targetId));
   };
 
-  const onEditTitle = e => {
+  const onSetTitle = e => {
     setCardInputValue(e.target.value);
   };
 
   const onEditDesc = e => {
-    // setCardDesc(e.target.desc)
+    setCardDesc(e.target.value);
   };
+
+  const onAddDesc = (e, id, localDesc) => {
+    setCards(cards.map(it => (it.id === id ? { ...it, desc: localDesc } : it)));
+    console.log(cards);
+  };
+
   return (
     <div className='board'>
       <h2 className='blind'>board title</h2>
@@ -55,6 +61,8 @@ const Board = ({ title, id, onRemove }) => {
             desc={card.desc}
             index={index}
             onRemoveCard={onRemoveCard}
+            onEditDesc={onEditDesc}
+            onAddDesc={onAddDesc}
           />
         );
       })}
@@ -67,7 +75,7 @@ const Board = ({ title, id, onRemove }) => {
           className='board-title'
           name='title'
           value={cardInputValue}
-          onChange={onEditTitle}
+          onChange={onSetTitle}
           placeholder='Enter list title...'
         />
       </button>

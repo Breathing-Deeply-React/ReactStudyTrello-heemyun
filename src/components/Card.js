@@ -43,7 +43,7 @@ const StyledCard = styled.div`
     }
   }
 `;
-const Card = ({ title, id, onRemoveCard }) => {
+const Card = ({ title, id, onRemoveCard, onEditDesc, onAddDesc }) => {
   const [isEditing, setIsEditing] = useState(false);
   // const [editTitle, setEditTitle] = useState('');
 
@@ -71,6 +71,8 @@ const Card = ({ title, id, onRemoveCard }) => {
           key={id}
           isEditing={isEditing}
           setIsEditing={setIsEditing}
+          onEditDesc={onEditDesc}
+          onAddDesc={onAddDesc}
           handleCloseModal={handleCloseModal}
         />
       )}
