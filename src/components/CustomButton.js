@@ -1,9 +1,9 @@
-import { useState, useRef } from 'react';
+import { useState, forwardRef } from 'react';
 import { mixins } from '../styles/layout';
 import styled, { css } from 'styled-components';
 import HeaderModal from './HeaderModal.js';
 
-const StyledButton = styled.button`
+const StyledButton = styled.div`
   position: relative;
   margin-right: 5px;
   padding: ${({ type }) => (type === 'dropdown' ? '8px 20px 8px 8px' : '8px')};
@@ -31,7 +31,7 @@ const StyledButton = styled.button`
   }}
 `;
 
-const CustomButton = ({ text, type, onClick }) => {
+const CustomButton = forwardRef(({ text, type }, ref) => {
   const buttonType = [
     'dropdown',
     'information',
@@ -41,13 +41,12 @@ const CustomButton = ({ text, type, onClick }) => {
     ? type
     : 'default';
 
-  // el : TODO 외부 영역 누르면 닫히겡
-  const el = useRef();
   const [isModalOpen, setModalOpen] = useState(false);
+  const [left, setLeft] = useState(0);
 
-  const handleOpenModal = ({ target }) => {
-    target.style.zIndex = '100';
+  const handleOpenModal = e => {
     setModalOpen(true);
+    setLeft(e.currentTarget.offsetLeft);
   };
 
   const handleCloseModal = e => {
@@ -66,14 +65,15 @@ const CustomButton = ({ text, type, onClick }) => {
       </StyledButton>
       {isModalOpen && (
         <HeaderModal
-          ref={el}
+          ref={ref}
           title={text}
           handleCloseModal={handleCloseModal}
+          left={left}
         />
       )}
     </>
   );
-};
+});
 
 CustomButton.defaultProps = {
   type: 'default'

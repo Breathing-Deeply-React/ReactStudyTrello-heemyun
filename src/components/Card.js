@@ -1,5 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import CardModal from '../components/CardModal';
 
@@ -43,7 +44,7 @@ const StyledCard = styled.div`
     }
   }
 `;
-const Card = ({ title, id, onRemoveCard, onEditDesc, onAddDesc }) => {
+const Card = ({ title, id, index, onRemoveCard, onEditDesc, onAddDesc }) => {
   const [isEditing, setIsEditing] = useState(false);
   // const [editTitle, setEditTitle] = useState('');
 
@@ -54,29 +55,55 @@ const Card = ({ title, id, onRemoveCard, onEditDesc, onAddDesc }) => {
   const handleCloseModal = () => {
     setIsEditing(isEditing => !isEditing);
   };
+  const handleEnd = result => {
+    console.log(result);
+  };
 
   return (
-    <>
-      <StyledCard className='card' onClick={e => handleOpenModal(e, id)}>
-        <div className='card-inner'>
-          <h3 className='blind'>card title</h3>
-          <p className='card-title'>{title}</p>
-          <button onClick={() => onRemoveCard(id)}>x</button>
-        </div>
-      </StyledCard>
-      {isEditing && (
-        <CardModal
-          title={title}
-          id={id}
-          key={id}
-          isEditing={isEditing}
-          setIsEditing={setIsEditing}
-          onEditDesc={onEditDesc}
-          onAddDesc={onAddDesc}
-          handleCloseModal={handleCloseModal}
-        />
-      )}
-    </>
+    <DragDropContext onDragEnd={handleEnd}>
+      <Droppable droppableId="card-list">
+        {provided => (
+          <div {...provided.droppableProps} ref={provided.innerRef}>
+            <Draggable key={id} draggableId={id.toString()} index={index}>
+              {(provided, snapshot) => {
+                return (
+                  <div
+                    key={id}
+                    {...provided.draggableProps}
+                    ref={provided.innerRef}
+                    {...provided.dragHandleProps}
+                  >
+                    <StyledCard
+                      className="card"
+                      onClick={e => handleOpenModal(e, id)}
+                    >
+                      <div className="card-inner">
+                        <h3 className="blind">card title</h3>
+                        <p className="card-title">{title}</p>
+                        <button onClick={() => onRemoveCard(id)}>x</button>
+                      </div>
+                    </StyledCard>
+                    {isEditing && (
+                      <CardModal
+                        title={title}
+                        id={id}
+                        key={id}
+                        isEditing={isEditing}
+                        setIsEditing={setIsEditing}
+                        onEditDesc={onEditDesc}
+                        onAddDesc={onAddDesc}
+                        handleCloseModal={handleCloseModal}
+                      />
+                    )}
+                  </div>
+                );
+              }}
+            </Draggable>
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
   );
 };
 export default Card;

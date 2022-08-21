@@ -4,6 +4,7 @@ import styled from 'styled-components';
 const StyledModal = styled.div`
   position: fixed;
   top: 40px;
+  left: ${({ left }) => `${left + 117}px`};
   width: 305px;
   height: auto;
   border-radius: 4px;
@@ -30,9 +31,9 @@ const StyledModal = styled.div`
   }
 `;
 
-const Modal = ({ title, handleCloseModal }) => {
+const Modal = ({ title, handleCloseModal, left }) => {
   return (
-    <StyledModal className='modal' mixins={{ ...mixins }}>
+    <StyledModal className='modal' mixins={{ ...mixins }} left={left}>
       <div className='modal-inner'>
         <div className='modal-title'>{title}</div>
         <div className='modal-content'></div>
